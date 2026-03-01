@@ -38,7 +38,11 @@ export default async function handler(req, res) {
       // 指定使用 gpt-4o-mini，生成速度極快，完美避開 Vercel 10秒超時限制
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
-        messages: [{ role: "user", content: userMessage }],
+        messages: [
+          // 加入這行系統提示詞，強力約束 AI 的行為與語言
+          { role: "system", content: "你是一個專業的 AI 助理，請務必嚴格使用繁體中文（台灣）來回答使用者的所有問題。" },
+          { role: "user", content: userMessage }
+        ],
         max_tokens: 800, // 控制最高字數以維持極速回應
       });
 
